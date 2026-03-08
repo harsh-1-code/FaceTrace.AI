@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Visage Photo Finder</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#0a0a0a;
+color:white;
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 60px;
+border-bottom:1px solid #222;
+}
+
+.logo{
+font-size:26px;
+letter-spacing:6px;
+color:#d4af37;
+}
+
+.navlinks{
+display:flex;
+gap:30px;
+}
+
+.navlinks a{
+text-decoration:none;
+color:#aaa;
+font-size:14px;
+}
+
+.navlinks a:hover{
+color:#d4af37;
+}
+
+/* MAIN LAYOUT */
+
+.main{
+display:grid;
+grid-template-columns:1fr 1fr;
+min-height:90vh;
+}
+
+/* LEFT */
+
+.left{
+padding:60px;
+border-right:1px solid #222;
+}
+
+.tag{
+color:#d4af37;
+font-size:12px;
+letter-spacing:3px;
+margin-bottom:20px;
+}
+
+.hero{
+font-size:38px;
+margin-bottom:40px;
+}
+
+.hero span{
+color:#d4af37;
+font-style:italic;
+}
+
+video{
+width:100%;
+max-width:380px;
+border-radius:10px;
+border:2px solid #d4af37;
+}
+
+.buttons{
+margin-top:20px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+button{
+padding:12px 22px;
+border:1px solid #d4af37;
+background:transparent;
+color:#d4af37;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#d4af37;
+color:rgb(0, 0, 0);
+}
+
+/* RIGHT */
+
+.right{
+padding:60px;
+}
+
+.heading{
+font-size:26px;
+margin-bottom:20px;
+}
+
+.heading span{
+color:#d4af37;
+font-style:italic;
+}
+
+/* GALLERY */
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:20px;
+}
+
+.card{
+position:relative;
+overflow:hidden;
+background:#111;
+border-radius:10px;
+padding-bottom:10px;
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+transition:.3s;
+}
+
+.card:hover img{
+transform:scale(1.05);
+}
+
+.group-tag{
+position:absolute;
+top:10px;
+right:10px;
+background:#777574c3;
+color:black;
+font-size:11px;
+padding:4px 6px;
+}
+
+/* DOWNLOAD BUTTON */
+
+.download-btn{
+width:90%;
+margin:10px auto;
+display:block;
+padding:8px;
+border:none;
+background:#d4af37;
+color:black;
+font-weight:500;
+cursor:pointer;
+border-radius:4px;
+}
+
+.download-btn:hover{
+background:#c49b2f;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.main{
+grid-template-columns:1fr;
+}
+
+.left{
+border-right:none;
+border-bottom:1px solid #222;
+}
+
+.navbar{
+padding:20px;
+}
+
+.left,.right{
+padding:30px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div class="logo">FaceTrace</div>
+
+</div>
+
+<div class="main">
+
+<!-- LEFT SIDE -->
+
+<div class="left">
+
+<div class="tag">FACE RECOGNITION ENGINE</div>
+
+<div class="hero">
+Discover your <span>captured moments</span>
+</div>
+
+<video id="video" autoplay></video>
+
+<div class="buttons">
+
+<button onclick="startCamera()">Open Camera</button>
+
+<button onclick="capture()">Search Photos</button>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+
+<div class="right">
+
+<div class="heading">
+Your <span>photo archive</span> awaits discovery
+</div>
+
+<div id="result" class="gallery"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let video=document.getElementById("video")
+
+function startCamera(){
+
+navigator.mediaDevices.getUserMedia({video:true})
+
+.then(stream=>{
+video.srcObject=stream
+})
+
+}
+
+function capture(){
+
+let canvas=document.createElement("canvas")
+
+canvas.width=video.videoWidth
+canvas.height=video.videoHeight
+
+let ctx=canvas.getContext("2d")
+
+ctx.drawImage(video,0,0)
+
+canvas.toBlob(function(blob){
+
+let formData=new FormData()
+
+formData.append("image",blob,"capture.jpg")
+
+fetch("/search",{
+method:"POST",
+body:formData
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let result=document.getElementById("result")
+result.innerHTML=""
+
+data.photos.forEach(photo=>{
+
+result.innerHTML+=`
+
+<div class="card">
+
+<span class="group-tag">MATCH</span>
+
+<img src="/dataset/${photo}">
+
+<a href="/dataset/${photo}" download>
+
+<button class="download-btn">Download</button>
+
+</a>
+
+</div>
+
+`
+
+})
+
+})
+
+})
+
+}
+
+</script>
+
+</body>
+
+</html>
