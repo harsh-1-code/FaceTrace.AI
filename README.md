@@ -169,7 +169,7 @@ This project is open-source and available under the **MIT License**.
 
 ## Author
 
-Developed by **Ayush Kumar**
+Developed by ** Harsh Kumar & Ayush Kumar**
 
 AI Project: **FaceTrace.ai – Intelligent Event Photo Finder**
 
