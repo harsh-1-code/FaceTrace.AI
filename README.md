@@ -1,8 +1,8 @@
-cd# FaceTrace.AI
+cd# FaceVault.AI
 
 ### AI-Powered Event Photo Finder
 
-FaceTrace.ai is an intelligent **face recognition-based photo retrieval system** that allows users to find their photos from large event photo collections using a **single selfie**.
+FaceVault.ai is an intelligent **face recognition-based photo retrieval system** that allows users to find their photos from large event photo collections using a **single selfie**.
 
 The system detects faces in the uploaded selfie and searches the dataset to return all images where the same person or group of people appear.
 
@@ -163,7 +163,7 @@ Instead of manually searching through all images, users can simply:
 
 ## License
 
-This project is open-source and available under the **MIT License**.
+This project is open-source.
 
 ---
 
@@ -171,5 +171,5 @@ This project is open-source and available under the **MIT License**.
 
 Developed by ** Harsh Kumar & Ayush Kumar**
 
-AI Project: **FaceTrace.ai – Intelligent Event Photo Finder**
+AI Project: **FaceVault.ai – Intelligent Event Photo Finder**
 
